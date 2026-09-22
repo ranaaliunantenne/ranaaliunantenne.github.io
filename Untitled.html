@@ -1,0 +1,59 @@
+<html>
+<body>
+    <canvas id="canvasElement"></canvas>
+</body>
+
+<script>
+    document.body.style.margin = '0'
+    document.body.style.overflow = 'hidden'    
+
+    const cnv = document.getElementById ('canvasElement')
+    const ctx = cnv.getContext ('2d')
+
+    function resizeCanvas () {
+        cnv.width = window.innerWidth
+        cnv.height = window.innerHeight
+    }
+
+    resizeCanvas ()
+    window.addEventListener ('resize', resizeCanvas)
+
+    // make an empty array
+    const positions = []
+
+    cnv.addEventListener ('mousemove', (event) => {
+
+        // make an object with object literal syntax
+        // with the x and y coordinates
+        // and push it into the array
+        positions.push ({ 
+            x: event.offsetX, 
+            y: event.offsetY 
+        })
+    })
+
+    function drawFrame (ms) {
+        // draw background
+        ctx.fillStyle = 'turquoise'
+        ctx.fillRect (0, 0, cnv.width, cnv.height)
+
+        // go through the array
+        positions.forEach ((pos) => {
+
+            // get coordinates and add some randomness
+            const x = pos.x + Math.random () * 6 - 3
+            const y = pos.y + Math.random () * 6 - 3
+
+            // set the fill color
+            ctx.fillStyle = 'deeppink'
+ 
+            // draw a rectangle at the coordinates
+            ctx.fillRect (x, y, 10, 10)
+        })
+
+        requestAnimationFrame (drawFrame)
+    }
+
+    requestAnimationFrame (drawFrame)
+</script>
+</html>
