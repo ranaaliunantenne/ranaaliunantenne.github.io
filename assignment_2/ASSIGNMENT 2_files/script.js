@@ -27,11 +27,11 @@ function togglePlayPause() {
   if (video.paused) {
         video.play();
         audio.play();
-    playPauseImg.src = "https://img.icons8.com/ios-glyphs/30/pause--v1.png";
+    playPauseImg.src = "ASSIGNMENT 2_files/images/play--v1.png";
   } else {
     video.pause();
     audio.pause();
-    playPauseImg.src = "https://img.icons8.com/ios-glyphs/30/play--v1.png";
+    playPauseImg.src = "ASSIGNMENT 2_files/images/pause--v1.png";
   }
 }
 function updateProgressBar() {
@@ -60,31 +60,31 @@ function showPage(page) {
 
   if (page ==="nature") {
     document.body.classList.add("nature-theme");
-     videoSource.src = "ASSIGNMENT 2_files/nature.mp4";
-    audioSource.src = "ASSIGNMENT 2_files/nature music.mp3";
+     videoSource.src = "ASSIGNMENT 2_files/video/nature.mp4";
+    audioSource.src = "ASSIGNMENT 2_files/audio/nature_music.mp3";
    
   
   }
 
   else if (page === "study") {
     document.body.classList.add("study-theme");
-      videoSource.src = "ASSIGNMENT 2_files/study.mp4";
-    audioSource.src = "ASSIGNMENT 2_files/study music.mp3";
+      videoSource.src = "ASSIGNMENT 2_files/video/study.mp4";
+    audioSource.src = "ASSIGNMENT 2_files/audio/study_music.mp3";
   
   }
 
   else if (page === "creative"){
     document.body.classList.add("creative-theme");
-    videoSource.src = "ASSIGNMENT 2_files/creative.mp4";
-    audioSource.src = "ASSIGNMENT 2_files/creative music.mp3";
+    videoSource.src = "ASSIGNMENT 2_files/video/creative.mp4";
+    audioSource.src = "ASSIGNMENT 2_files/audio/creative_music.mp3";
     
 
   }
 
   else if (page ==="home") {
     document.body.classList.add("home-theme");
-    videoSource.src = "ASSIGNMENT 2_files/midnight.mp4";
-    audioSource.src = "ASSIGNMENT 2_files/midnight music.mp3";
+    videoSource.src = "ASSIGNMENT 2_files/video/midnight.mp4";
+    audioSource.src = "ASSIGNMENT 2_files/audio/midnight_music.mp3";
     
       
   }
