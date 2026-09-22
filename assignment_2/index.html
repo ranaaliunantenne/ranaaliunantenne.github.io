@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- add the font family of your choice -->
-    <link rel="stylesheet" href="./ASSIGNMENT 2_files/reset.css">
-    <link rel="stylesheet" href="./ASSIGNMENT 2_files/style.css">
-    <script src="./ASSIGNMENT 2_files/script.js." defer=""></script>
+    <link rel="stylesheet" href="files\reset.css">
+    <link rel="stylesheet" href="files\style.css">
+    <script src="files\script.js" defer=""></script>
   </head>
   <!--I have used the help of chatgpt to understand and learn to use some JavaScript functions, how to fix some codes that were not working, and how to implement them -->
   <!--I have taken the videos for the mediaplayer from the 'pixabay' website-->
@@ -16,7 +16,7 @@
     <!-- Header Section -->
     <header>
       <!--I added a logo to give the website a unique identity -->
-      <img src="ASSIGNMENT 2_files\images\lofilogo.jpg" alt="Logo" class="logo" style="float: center;">
+      <img src="files\images\lofilogo.jpg" alt="Logo" class="logo" style="float: center;">
       <h1><i>MIDNIGHT STUDY</i></h1>
     </header>
 
@@ -39,17 +39,17 @@
        <!--Along with the video, the audio will also change based on the selected mode, this will also give the user a more immersive experience -->
       <div class="media-player">
         <video id="custom-video-player">
-          <source id="video-source" src="ASSIGNMENT 2_files\video\midnight.mp4" type="video/mp4">
+          <source id="video-source" src="files\video\midnight.mp4" type="video/mp4">
         </video>
 
         <audio id="mode-audio">
-    <source id="audio-source" src="ASSIGNMENT 2_files\audio\midnight_music.mp3" type="audio/mpeg">
+    <source id="audio-source" src="files\audio\midnight_music.mp3" type="audio/mpeg">
         </audio>
 
         <!--The play pause button will help the user control what they are watching-->
         <div class="custom-controls">
           <button id="play-pause-btn" onclick="togglePlayPause()">
-            <img id="play-pause-img" src="ASSIGNMENT 2_files\images\play--v1.png" alt="Play Button" width="24" height="24">
+            <img id="play-pause-img" src="files\images\play--v1.png" alt="Play Button" width="24" height="24">
           </button>
 
           <!-- add the missing buttons or functionality here -->
@@ -58,7 +58,7 @@
             <span id="progress-bar-fill"></span>
           </div>
           <div>
-            <img id="repeat" src="ASSIGNMENT 2_files\images\icons8-repeat-30.png" alt="Repeat button"  width="24" height="24">
+            <img id="repeat" src="files\images\icons8-repeat-30.png"alt="Repeat button"  width="24" height="24">
           </div>
           <!--The volume control button will give more interactivity for the user to engage in the website-->
           <div class = "volume-control">
