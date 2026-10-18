@@ -3,10 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Click for Clues</title>
-    
+ <style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        font-family: Georgia,serif;
+        color: #fff5df;
+        background: #292344;
+    }
+    header{
+        text-align: center;
+        padding: 18px 12px;
+        background: #292344;
+    }
+    header h1 {
+        margin: 0;
+        color: #ffc857;
+        font-size: 22px;
+    }
+    header p{
+        margin: 8px 0 0;
+        color: b8e9e3;
+        font-size: 16px;
+        font-family: Georgia, serif;
+    }
+    .room {
+        position: relative;
+        width: 100%;
+        min-height: 600px;
+        background-image: url("images/background.png");
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        border: 3px solid #39b8b0;
+        border-radius: 12px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .game{
+        width : min(100%, 1000px);
+        margin: auto;
+        padding: 12px;
+    }
+    .clue {
+        position: absolute;
+        z-index: 10;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        background: #292344;
+        color: #fff5df;
+        padding: 8px 12px;
+        font-family: Georgia, serif;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 3px 12px #17132955;
+        transition: transform 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .clue:hover,
+    .clue:focus-visible{
+        transform: scale(1.05);
+        border-color:#39b8b0;
+        background: #292344;
+        box-shadow: 0 0px 18px #39b8b0aa;
+        outline: none;
+    }
+    .painting{
+        left: 40%;
+        top: 20%;
+    }
+    .journal{
+        left: 10%;
+        top: 60%;
+    }
+    .key{
+        left: 35%;
+        top: 60%;
+    }
+    .envelope{
+        left: 20%;
+        top: 70%;
+    }
+    .escape{
+        right: 10%;
+        bottom: 10%;
+        border-color: 2px solid #ffc857;
+        color: #ffc857;
+    }
+    .progress{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        padding: 15px;
+        border: 1px solid #51446e;
+        border-radius: 10px;
+        background: #352c50;
+        font-family: Georgia, serif;
+    }
+    .progress strong{
+        color: ffc857;
+    }
+    #status{
+        color: #b8e9e3;
+        font-size: 14px;
+    }
+    .layer{
+        position: fixed;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: #141023;
+    }
+    .layer.show{
+        display: flex;
+    }
+    .panel{
+        width: min(100%, 400px);
+        padding: 25px;
+        border-radius: 15px;
+        border: 2px solid #ffc857;
+        background: #352c50;
+        box-shadow: 0 0 30px #17132999;
+        text-align: center;
+        animation: appear 0.25s ease-out;
+    }
+    .panel.symbol{
+        font-size: 38px;
+    }
+    .panel h2{
+        color: #ffc857;
+        font-size: 22px;
+        margin: 12px;
+    }
+    .panel p{
+        color: #fff5df; 
+        line-height: 1.7;
+    }
+    .task{
+        margin-top: 12px;
+        padding: 12px;
+        border: 0;
+        border-radius: 10px;
+        background: #39b8b0;
+        color: #20203a;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .task:hover{
+        background: #71ddd1;
+    }
+    .ending-title {
+       color: #ff8b61;   
+    }
+    @keyframes appear{
+        from{
+            opacity: 0;
+            transform: translateY(12px) scale(0.97);
+        }
+        to{
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    footer{
+        text-align: center;
+        padding: 12px;
+        font-size: 14px;
+        color: #b8e9e3;
+        font-family: Georgia, serif;
+    }
+    @media (max-width: 600px){
+        .game{
+            padding: 6px;
+        }
+        .room{
+            border-width: 2px;
+            border-radius: 7px;
+        }
+        .clue{
+            padding: 6px;
+            font-size:10px;
+            border-radius: 7px;
+        }
+        .progress{
+            padding: 10px;
+        }
+        .panel{
+            padding: 20px;
+        }
+    }
+</style>
 </head>
 <body>
+<header>
+    <h1>Escape Room</h1>
+    <p>Click on the clues to find the key and escape!</p>
+</header>
 
+<main class="game">
+<div class="room">
+    <button class="painting clue" id="painting"><img src="" alt="Painting" width=""></button>
+
+    <button class="journal clue" id="journal"><img src=""></button>
+
+    <button class="key clue" id="key"><img src=""></button>
+
+    <button class="envelope clue" id="envelope"><img src=""></button>
+
+    <button class="object escape" id="exit">Escape</button>
+</div>
+<div class="progress">
+    <span>Clues found: <strong id="clueNumber">0 / 5</strong></span>
+    <span id="status">Explore room to start!</span>
+</div>
+</main>
+
+<div class="layer" id="layer">
+    <section class="panel">
+        <div class="symbol" id="panelSymbol">Discover</div>
+        <h2 id="panelTitle">Secret!</h2>
+        <p id="panelText">You found a clue!</p>
+        <button class="task" id="closebutton">Return</button>
+    </section>
+</div>
+<footer>CLICK FOR CLUES</footer>
+
+<script>
+
+const layer = document.getElementById("layer");
+const panelSymbol = document.getElementById("panelSymbol");
+const panelTitle = document.getElementById("panelTitle");
+const panelText = document.getElementById("panelText");
+const clueNumber = document.getElementById("clueNumber");
+const statusText = document.getElementById("status");
+const closebutton = document.getElementById("closebutton");
+
+let cluesFound = new Set();
+let foundKey = false;
+let envelopeOpened = false;
+
+function showPanel(title, text, symbol = Discover){
+    
+    panelTitle.textContent = title;
+    panelText.textContent = text;
+    panelSymbol.textContent = symbol;
+    layer.classList.add("show");
+    closebutton.focus();
+}
+function closePanel(){
+    layer.classList.remove("show");
+}
+function findClue(number){
+    foundClues.add(number);
+    clueNumber.textContent = `${foundClues.size} / 5`;
+
+    if (foundClues.size ===5){
+        statusText.textContent ="You found all the clues!";
+    }else{
+        statusText.textContent = `You found ${foundClues.size} clues. Keep searching!`;
+    }
+}
+
+//Search Painting
+document.getElementById("painting").addEventListener("click",() => {
+    findClue(1);
+    showPanel("THE PAINTING",);
+});
+//Search Journal
+document.getElementById("journal").addEventListener("click",() => {
+    findClue(2);
+    showPanel("THE JOURNAL",);
+    });
+//Search Envelope
+</script>
+    
 </body>
 </html>
