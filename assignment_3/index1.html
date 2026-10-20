@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click for Clues</title>
+   
+ <style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        font-family: Georgia,serif;
+        color: #fff5df;
+        background: #292344;
+    }
+    header{
+        text-align: center;
+        padding: 18px 12px;
+        background: #292344;
+    }
+    header h1 {
+        margin: 0;
+        color: #ffc857;
+        font-size: 22px;
+    }
+    header p{
+        margin: 8px 0 0;
+        color: b8e9e3;
+        font-size: 16px;
+    }
+     .game{
+        width : min(100%, 1000px);
+        margin: auto;
+        padding: 12px;
+    }
+    .room {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 3/2 ;
+        min-height: 400px;
+        background-image: url("images/background.png");
+        background-size: 100% 100%;
+        background-position: center;
+        overflow: hidden;
+        border: 3px solid #39b8b0;
+        border-radius: 12px;
+        background-repeat: no-repeat;
+    }
+   
+    .clue {
+        position: absolute;
+        z-index: 10;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background: transparent;
+        color: #fff5df;
+        padding:0;
+        cursor: pointer;;
+        transition: transform 0.2s, filter 0.2s;
+    }
+    .clue img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .clue:hover,
+    .clue:focus-visible{
+        transform: scale(1.05);
+       filter: drop-shadow(0 0 10px #39b8b0);
+        outline: none;
+    }
+    .painting{
+        left: 35%;
+        top: 20%;
+        width: 13%;
+    }
+    .journal{
+        left: 5%;
+        top: 50%;
+       width: 15%;
+    }
+    .key{
+        display: none;
+        left: 30%;
+        top: 70%;
+        width: 10%;
+    }
+    .key.visible{
+        display: block;
+    }
+    .envelope{
+        left: 60%;
+        top: 75%;
+         width: 14%;
+    }
+    .escape{
+        right: 4%;
+        top: 35%;
+        width: auto;
+        padding: 10px 15px;
+        border: 2px solid #ffc857;
+        border-radius: 10px;
+        background: #292344;
+        color: #ffc857;
+        font-family: Georgia, serif;
+        font-size: 15px;
+        font-weight: bold;
+    }
+    .progress{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        padding: 15px;
+        border: 1px solid #51446e;
+        border-radius: 10px;
+        background: #352c50;
+    }
+    .progress strong{
+        color: #ffc857;
+    }
+    #status{
+        color: #b8e9e3;
+        font-size: 14px;
+    }
+    .layer{
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: #141023c7;
+    }
+    .layer.show{
+        display: flex;
+    }
+    .panel{
+        width: min(100%, 400px);
+        padding: 25px;
+        border-radius: 15px;
+        border: 2px solid #ffc857;
+        background: #352c50;
+        box-shadow: 0 0 30px #17132999;
+        text-align: center;
+        animation: appear 0.25s ease-out;
+    }
+    .symbol{
+        font-size: 38px;
+    }
+    .panel h2{
+        color: #ffc857;
+        font-size: 22px;
+        margin: 12px;
+    }
+    .panel p{
+        color: #fff5df; 
+        line-height: 1.7;
+    }
+    .task{
+        margin-top: 12px;
+        padding: 12px;
+        border: 0;
+        border-radius: 10px;
+        background: #39b8b0;
+        color: #20203a;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .task:hover{
+        background: #71ddd1;
+    }
+    .ending-title {
+       color: #ff8b61;   
+    }
+    @keyframes appear{
+        from{
+            opacity: 0;
+            transform: translateY(12px) scale(0.97);
+        }
+        to{
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    footer{
+        text-align: center;
+        padding: 12px;
+        font-size: 14px;
+        color: #b8e9e3;
+    }
+    @media (max-width: 600px){
+        .game{
+            padding: 6px;
+        }
+        .room{
+            min-height: 350px;
+            border-width: 2px;
+            border-radius: 7px;
+        }
+        .escape{
+            padding: 6px 9px;
+            font-size:12px;
+        }
+        .progress{
+            padding: 10px;
+        }
+        .panel{
+            padding: 20px;
+        }
+    }
+</style>
+</head>
+<body>
+<header>
+    <h1>Escape Room</h1>
+    <p>Click on the clues to find the key and escape!</p>
+</header>
+
+<main class="game">
+<div class="room">
+    <button class="painting clue" id="painting" aria-label="Search the painting"><img src="images\Painting.png" alt="Painting" width="80" height="100"></button>
+
+    <button class="journal clue" id="journal" aria-label="Search journal"><img  src="images\Journal.png" width="120" height="100"></button>
+
+    <button class="key clue" id="key" aria-label="Collect key"><img src="images\Key.png" width="50" height="50"></button>
+
+    <button class="envelope clue" id="envelope" aria-label="Open envelope"><img src="images\Envelope.png" width="100" height="100"></button>
+
+    <button class="object escape" id="exit">Escape</button>
+</div>
+
+<div class="progress">
+    <span>Clues found: <strong id="clueNumber">0 / 5</strong></span>
+    <span id="status">Explore room to start!</span>
+</div>
+</main>
+
+<div class="layer" id="layer">
+    <section class="panel">
+        <div class="symbol" id="panelSymbol">Discover</div>
+        <h2 id="panelTitle">Secret!</h2>
+        <p id="panelText">You found a clue!</p>
+        <button class="task" id="closebutton">Return</button>
+    </section>
+</div>
+<footer>CLICK FOR CLUES</footer>
+
+<script>
+
+
+const layer = document.getElementById("layer");
+const panelSymbol = document.getElementById("panelSymbol");
+const panelTitle = document.getElementById("panelTitle");
+const panelText = document.getElementById("panelText");
+const clueNumber = document.getElementById("clueNumber");
+const statusText = document.getElementById("status");
+const closebutton = document.getElementById("closebutton");
+
+const key = document.getElementById("key");
+const envelope = document.getElementById("envelope");
+const exit = document.getElementById("exit");
+
+let cluesFound = new Set();
+let foundKey = false;
+let envelopeOpened = false;
+let gameComplete = false;
+
+function showPanel(title, text, symbol = "🔎") {
+    panelTitle.textContent = title;
+    panelText.textContent = text;
+    panelSymbol.textContent = symbol;
+
+    panelTitle.classList.toggle("ending-title", gameComplete);
+    layer.classList.add("show");
+    closebutton.focus();
+}
+
+function closePanel() {
+    layer.classList.remove("show");
+}
+
+function findClue(number) {
+    cluesFound.add(number);
+
+    // There are four clues: painting, journal, envelope and key
+    clueNumber.textContent = `${cluesFound.size} / 4`;
+
+    if (cluesFound.size === 4) {
+        statusText.textContent = "You found all the clues!";
+    } else {
+        statusText.textContent =
+            `You found ${cluesFound.size} clues. Keep searching!`;
+    }
+}
+
+// Painting
+document.getElementById("painting").addEventListener("click", () => {
+    findClue(1);
+
+    showPanel(
+        "THE PAINTING",
+        "The painting looks familiar. Look around the room to find a similar-looking journal.",
+        "🖼️"
+    );
+});
+
+// Journal
+document.getElementById("journal").addEventListener("click", () => {
+    findClue(2);
+
+    showPanel(
+        "THE JOURNAL",
+        "What word starts with E and ends with E but has only one letter in it? Envelope!",
+        "📖"
+    );
+});
+
+// Envelope
+envelope.addEventListener("click", () => {
+    if (!envelopeOpened) {
+        envelopeOpened = true;
+        findClue(3);
+
+        // Reveal the key
+        key.classList.add("visible");
+
+        showPanel(
+            "HIDDEN MESSAGE!",
+            "You found a letter inside the envelope! It says: 'The key to unlock the door is hidden behind the cupboard.'",
+            "✉️"
+        );
+    } else {
+        showPanel(
+            "THE LETTER",
+            "Remember: the key to escape is hidden behind the cupboard.",
+            "✉️"
+        );
+    }
+});
+
+// Key
+key.addEventListener("click", () => {
+    if (!envelopeOpened) {
+        showPanel(
+            "HIDDEN KEY?",
+            "You should explore the room and read the envelope first.",
+            "🗝️"
+        );
+        return;
+    }
+
+    if (!foundKey) {
+        foundKey = true;
+        findClue(4);
+
+        // Hide the key after collecting it
+        key.style.display = "none";
+
+        showPanel(
+            "KEY COLLECTED!",
+            "You found the golden key! Now try it on the exit.",
+            "🗝️"
+        );
+    } else {
+        showPanel(
+            "KEY COLLECTED",
+            "You already have the key. Try unlocking the exit.",
+            "🗝️"
+        );
+    }
+});
+
+// Escape
+exit.addEventListener("click", () => {
+    if (foundKey) {
+        gameComplete = true;
+
+        showPanel(
+            "MYSTERY SOLVED!",
+            "You found the key and unlocked the door. You are finally free to leave the room and begin a new chapter!",
+            "🚪"
+        );
+    } else {
+        showPanel(
+            "DOOR IS LOCKED",
+            "You need to find the key before you can escape. Open the envelope to discover where it is hidden.",
+            "🔒"
+        );
+    }
+});
+
+// Close popup
+closebutton.addEventListener("click", closePanel);
+
+layer.addEventListener("click", (event) => {
+    if (event.target === layer) {
+        closePanel();
+    }
+});
+
+// Press Escape to close popup
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closePanel();
+    }
+});
+
+     
+</script>
+    
+</body>
+</html>

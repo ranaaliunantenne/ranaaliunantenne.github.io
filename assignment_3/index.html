@@ -27,7 +27,7 @@
     }
     header p{
         margin: 8px 0 0;
-        color: b8e9e3;
+        color: #b8e9e3;
         font-size: 16px;
     }
      .game{
@@ -83,16 +83,16 @@
     }
     .key{
         display: none;
-        left: 30%;
-        top: 70%;
+        left: 60%;
+        top: 68%;
         width: 10%;
     }
     .key.visible{
         display: block;
     }
     .envelope{
-        left: 60%;
-        top: 75%;
+        left: 75%;
+        top: 78%;
          width: 14%;
     }
     .escape{
@@ -220,23 +220,24 @@
 <header>
     <h1>Escape Room</h1>
     <p>Click on the clues to find the key and escape!</p>
+     <p>The first thing you notice is the enchanting painting.</p>
 </header>
 
 <main class="game">
 <div class="room">
-    <button class="painting clue" id="painting" aria-label="Search the painting"><img src="images\Painting.png" alt="Painting" width="80" height="100"></button>
+    <button class="painting clue" id="painting" aria-label="Search the painting"><img src="images/Painting.png" alt="Painting" width="80" height="100"></button>
 
-    <button class="journal clue" id="journal" aria-label="Search journal"><img  src="images\Journal.png" width="120" height="100"></button>
+    <button class="journal clue" id="journal" aria-label="Search journal"><img  src="images/Journal.png" width="120" height="100"></button>
 
-    <button class="key clue" id="key" aria-label="Collect key"><img src="images\Key.png" width="50" height="50"></button>
+    <button class="key clue" id="key" aria-label="Collect key"><img src="images/Key.png" width="50" height="50"></button>
 
-    <button class="envelope clue" id="envelope" aria-label="Open envelope"><img src="images\Envelope.png" width="100" height="100"></button>
+    <button class="envelope clue" id="envelope" aria-label="Open envelope"><img src="images/Envelope.png" width="100" height="100"></button>
 
     <button class="object escape" id="exit">Escape</button>
 </div>
 
 <div class="progress">
-    <span>Clues found: <strong id="clueNumber">0 / 5</strong></span>
+    <span>Clues found: <strong id="clueNumber">0 / 4</strong></span>
     <span id="status">Explore room to start!</span>
 </div>
 </main>
@@ -260,6 +261,7 @@ const panelText = document.getElementById("panelText");
 const clueNumber = document.getElementById("clueNumber");
 const statusText = document.getElementById("status");
 const closebutton = document.getElementById("closebutton");
+
 const key = document.getElementById("key");
 const envelope = document.getElementById("envelope");
 const exit = document.getElementById("exit");
@@ -269,94 +271,134 @@ let foundKey = false;
 let envelopeOpened = false;
 let gameComplete = false;
 
-function showPanel(title, text, symbol = "Discover"){
-    
+function showPanel(title, text, symbol = "🔎") {
     panelTitle.textContent = title;
     panelText.textContent = text;
     panelSymbol.textContent = symbol;
+
     panelTitle.classList.toggle("ending-title", gameComplete);
     layer.classList.add("show");
     closebutton.focus();
 }
-function closePanel(){
+
+function closePanel() {
     layer.classList.remove("show");
 }
-function findClue(number){
-    foundClues.add(number);
-    clueNumber.textContent = `${foundClues.size} / 5`;
 
-    if (foundClues.size ===5){
-        statusText.textContent ="You found all the clues!";
-    }else{
-        statusText.textContent = `You found ${foundClues.size} clues. Keep searching!`;
+function findClue(number) {
+    cluesFound.add(number);
+
+    // There are four clues: painting, journal, envelope and key
+    clueNumber.textContent = `${cluesFound.size} / 4`;
+
+    if (cluesFound.size === 4) {
+        statusText.textContent = "You found all the clues!";
+    } else {
+        statusText.textContent =
+            `You found ${cluesFound.size} clues. Keep searching!`;
     }
 }
 
-//Search Painting
-document.getElementById("painting").addEventListener("click",() => {
+// Painting
+document.getElementById("painting").addEventListener("click", () => {
     findClue(1);
-    showPanel("THE PAINTING","The painting looks familiar, look around the room to find a similar looking journal.");
+
+    showPanel(
+        "THE PAINTING",
+        "The painting looks interesting. Look around the room to find a mystic journal.",
+        "🖼️"
+    );
 });
 
-//Search Journal
-document.getElementById("journal").addEventListener("click",() => {
+// Journal
+document.getElementById("journal").addEventListener("click", () => {
     findClue(2);
-    showPanel("THE JOURNAL","What word starts with e and ends with e but has only one letter in it? Envelope!");
-    });
 
-//Search Envelope
+    showPanel(
+        "THE JOURNAL",
+        "What word starts with E and ends with E but has only one letter in it? Envelope!",
+        "📖"
+    );
+});
+
+// Envelope
 envelope.addEventListener("click", () => {
-    if (!envelopeOpened){
-        envelopeOpened =true;
+    if (!envelopeOpened) {
+        envelopeOpened = true;
         findClue(3);
-//Reveal Key
-key.classList.add("visible");
-    
-    showPanel("HIDDEN MESSAGE!", "You found the envelope! If you are reading this, the key to unlock the door is hidden behind the cupboard.");
-    }else{
+
+        // Reveal the key
+        key.classList.add("visible");
+
         showPanel(
-            "LETTER","Key to escape is hidden behind the cupboard."
+            "HIDDEN MESSAGE!",
+            "You found a letter inside the envelope! It says: 'The key to escape is hidden behind the cupboard.'",
+            "✉️"
+        );
+    }
+// If the user clicks the envelope for the second time
+    else {
+        showPanel(
+            "LETTER",
+            "Remember, the key to escape is hidden behind the cupboard.",
+            "✉️"
         );
     }
 });
 
-//Search Key
-key.addEventListener("click",() =>{
-    if (!envelopeOpened){
-        showPanel("Hidden Key?");
-        return;
-    }
-  if (!foundKey){
-    foundKey = true;
-    findClue(4);
+// Key
+key.addEventListener("click", () => {
 
-    //Hide key
-    key.style.display ="none";
-        showPanel("Unlocked!","Congradulations! You can now escape!");
-    } 
+    if (!foundKey) {
+        foundKey = true;
+        findClue(4);
+
+        // Hide the key after collecting it
+        key.style.display = "none";
+
+        showPanel(
+            "KEY COLLECTED!",
+            "You found the golden key! Now try it on the escape button!",
+            "🗝️"
+        );
+    }
 });
 
-//Escape
+// Escape
 exit.addEventListener("click", () => {
-    if (foundKey){
+    if (foundKey) {
         gameComplete = true;
-    showPanel("MYSTERY SOLVED!");
-    }else{
-        showpanel("Door is Locked.", "You need to look for the key to escape the room.");
+
+        showPanel(
+            "MYSTERY SOLVED!",
+            "Unlocked! Congratulations! You are finally free to escape the room!",
+            "🚪"
+        );
+    } else {
+        showPanel(
+            "YOU CANNOT LEAVE!",
+            "You need to find the key before you can escape.",
+            "🔒"
+        );
     }
 });
-//Close 
-closebutton.addEventListener("click",closePanel);
+
+// Close popup
+closebutton.addEventListener("click", closePanel);
+
 layer.addEventListener("click", (event) => {
     if (event.target === layer) {
-        closepanel();
+        closePanel();
     }
 });
-document.addEventListener("keydown",(event) => {
-    if (event.key === "Escape"){
-        closepanel();
+
+// Press Escape to close popup
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closePanel();
     }
 });
+
      
 </script>
     
