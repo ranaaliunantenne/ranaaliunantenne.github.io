@@ -48,7 +48,18 @@
         border-radius: 12px;
         background-repeat: no-repeat;
     }
-   
+/*The outdoor scene appears after the user escapes the room*/
+   .room.escaped{
+    background-image: url("images/outdoor.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+   }
+/*All the other clues are hidden when the user clicks the escape button*/
+   .room.escaped .clue,
+    .room.escaped .escape {
+    display: none;
+}
     .clue {
         position: absolute;
         z-index: 10;
@@ -229,9 +240,10 @@
 </head>
 <body>
 <header>
-    <h1>CLICK FOR CLUES!</h1>
-    <p>Click on the clues to find the key and escape!</p>
-     <p style: font-size="18px">The first thing you notice is the enchanting painting.</p>
+<!--The IDs will allow the javascript update the texts once the user escapes the room-->
+    <h1 id="pageTitle">CLICK FOR CLUES!</h1>
+    <p id="pageText">Click on the clues to find the key and escape!</p>
+     <p id="introText">The first thing you notice is the enchanting painting.</p>
 </header>
 
 <main class="game">
@@ -264,7 +276,10 @@
 <footer>Escape Room</footer>
 
 <script>
-
+const room = document.querySelector(".room");
+const pageTitle = document.getElementById("pageTitle");
+const pageText = document.getElementById("pageText");
+const introText = document.getElementById("introText");
 const layer = document.getElementById("layer");
 const panelSymbol = document.getElementById("panelSymbol");
 const panelTitle = document.getElementById("panelTitle");
@@ -381,25 +396,35 @@ key.addEventListener("click", () => {
 
         showPanel(
             "KEY COLLECTED!",
-            "You found the golden key! Now try it on the escape button!",
+            "You found the key! Now try it on the escape button!",
             "🗝️"
         );
     }
 });
 
-// Escape
+// Escape: this checks part of the code checks if the user has collected the key
 exit.addEventListener("click", () => {
     if (foundKey) {
+        // Confirms that the game is completed
         gameComplete = true;
+        //Changes the room background to the outdoor background
+        room.classList.add("escaped");
 
+        //Updates the heading and description texts
+        pageTitle.textContent = "YOU ARE FREE!";
+        pageText.textContent ="You have successfully made it out of the room.";
+        introText.textContent = "A new journey awaits you :)";
+        //Updates the message on the progress section
+        statusText.textContext = "Unlocked! Game Successful."
         showPanel(
             "MYSTERY SOLVED!",
-            "Unlocked! Congratulations! You are finally free to escape the room!",
-            "🚪"
+            "Congratulations! You are finally free!",
+            "🌳"
         );
     } 
 // If the player clicks 'Escape' before finding the key
     else {
+        //Keeps the user inside the room until they find the key
         showPanel(
             "YOU CANNOT LEAVE!",
             "You need to find the key before you can escape.",
