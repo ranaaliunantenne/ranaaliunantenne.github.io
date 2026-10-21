@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click for Clues</title>
-   
+<!--I have used the help of chatgpt to create the images for the website-->  
+<!--I have used the help of chatgpt to make some improvements in my CSS styling-->  
  <style>
+    /*Applies a fixed box sizing with consistent padding and borders*/
     * {
         box-sizing: border-box;
     }
@@ -199,6 +201,7 @@
     .ending-title {
        color: #ff8b61;   
     }
+/*This section creates a smooth animation when your message panel appears in the website screen.*/
     @keyframes appear{
         from{
             opacity: 0;
@@ -215,7 +218,7 @@
         font-size: 20px;
         color: #b8e9e3;
     }
-/*This part of the css allows the website to change the way it appears depending on the screen size */
+/*This section of the css allows the website to change the way it appears depending on the screen size */
     @media (max-width: 600px){
         .game{
             padding: 6px;
@@ -238,44 +241,57 @@
     }
 </style>
 </head>
+
 <body>
+<!--The introduction to the game-->
 <header>
 <!--The IDs will allow the javascript update the texts once the user escapes the room-->
     <h1 id="pageTitle">CLICK FOR CLUES!</h1>
     <p id="pageText">Click on the clues to find the key and escape!</p>
      <p id="introText">The first thing you notice is the enchanting painting.</p>
 </header>
-
+<!--The main game section keeps the room and progress sections together-->
 <main class="game">
 <div class="room">
-    <button class="painting clue" id="painting" aria-label="Search the painting"><img src="images/Painting.png" alt="Painting" width="80" height="100"></button>
 
-    <button class="journal clue" id="journal" aria-label="Search journal"><img  src="images/Journal.png" width="120" height="100"></button>
+<!--Image buttons that reveal clues once they are clicked-->
+    <button class="painting clue" id="painting" ><img src="images/Painting.png" width="80" height="100"></button>
 
-    <button class="key clue" id="key" aria-label="Collect key"><img src="images/Key.png" width="50" height="50"></button>
+    <button class="journal clue" id="journal"><img  src="images/Journal.png" width="120" height="100"></button>
 
-    <button class="envelope clue" id="envelope" aria-label="Open envelope"><img src="images/Envelope.png" width="100" height="100"></button>
+    <button class="key clue" id="key"><img src="images/Key.png" width="50" height="50"></button>
 
+    <button class="envelope clue" id="envelope"><img src="images/Envelope.png" width="100" height="100"></button>
+
+<!--The escape button allows the user to leave the room once the key has been found-->
     <button class="object escape" id="exit">Escape</button>
 </div>
-
+<!--This section counts how many clues have been found and gives instructions based on your progress -->
 <div class="progress">
     <span>Clues found: <strong id="clueNumber">0 / 4</strong></span>
     <span id="status">Explore room to start!</span>
 </div>
 </main>
 
+<!--The message panel appears on the screen when a clue is clicked-->
 <div class="layer" id="layer">
+    <!--The panel contains a symbol, a title, a text message and a return button-->
+    <!--The javascript will switch each symbol, title and message based on the clue that is clicked-->
     <section class="panel">
-        <div class="symbol" id="panelSymbol">Discover</div>
-        <h2 id="panelTitle">Secret!</h2>
+        <div class="symbol" id="panelSymbol">Icon</div>
+        <h2 id="panelTitle">Discover!</h2>
         <p id="panelText">You found a clue!</p>
+    <!--Closes the message panel and brings the user back to the room-->
         <button class="task" id="closebutton">Return</button>
     </section>
 </div>
+<!--Footer section-->
 <footer>Escape Room</footer>
 
+<!--Javascript section that controls the whole game-->
+<!--I have used the help of chatgpt to learn and fix mistakes in my javascript codes--> 
 <script>
+//Changes the elements on the message panel
 const room = document.querySelector(".room");
 const pageTitle = document.getElementById("pageTitle");
 const pageText = document.getElementById("pageText");
@@ -287,6 +303,7 @@ const panelText = document.getElementById("panelText");
 const clueNumber = document.getElementById("clueNumber");
 const statusText = document.getElementById("status");
 const closebutton = document.getElementById("closebutton");
+
 //The four clickable clues
 const painting = document.getElementById("painting");
 const journal = document.getElementById("journal");
@@ -295,11 +312,16 @@ const envelope = document.getElementById("envelope");
 //Exit button
 const exit = document.getElementById("exit");
 
+//Stores the number of clues collected
 let cluesFound = new Set();
+//Checks if the user has found the key
 let foundKey = false;
+//Checks if the user has clicked on the envelope
 let envelopeOpened = false;
+//Checks if the user has successfully escaped
 let gameComplete = false;
 
+//Opens and updates the message panel that reveal the symbol, title and clue
 function showPanel(title, text, symbol = "🔎") {
     panelTitle.textContent = title;
     panelText.textContent = text;
@@ -309,11 +331,11 @@ function showPanel(title, text, symbol = "🔎") {
     layer.classList.add("show");
     closebutton.focus();
 }
-
+//Hides the message panel
 function closePanel() {
     layer.classList.remove("show");
 }
-
+//Records the clue counter and refreshes the progress text
 function findClue(number) {
     cluesFound.add(number);
 
@@ -433,7 +455,7 @@ exit.addEventListener("click", () => {
     }
 });
 
-// Close popup
+// Close panel
 closebutton.addEventListener("click", closePanel);
 
 layer.addEventListener("click", (event) => {
@@ -442,7 +464,7 @@ layer.addEventListener("click", (event) => {
     }
 });
 
-// Press Escape to close popup
+// Press Escape to close panel
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         closePanel();
