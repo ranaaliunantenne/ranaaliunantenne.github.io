@@ -28,7 +28,7 @@
     header p{
         margin: 8px 0 0;
         color: #b8e9e3;
-        font-size: 16px;
+        font-size: 18px;
     }
      .game{
         width : min(100%, 1000px);
@@ -125,7 +125,7 @@
     }
     #status{
         color: #b8e9e3;
-        font-size: 14px;
+        font-size: 17px;
     }
     .layer{
         position: fixed;
@@ -191,9 +191,10 @@
     footer{
         text-align: center;
         padding: 12px;
-        font-size: 14px;
+        font-size: 20px;
         color: #b8e9e3;
     }
+/*this part of the css allows the website to change the way it appears depending on the screen size */
     @media (max-width: 600px){
         .game{
             padding: 6px;
@@ -218,9 +219,9 @@
 </head>
 <body>
 <header>
-    <h1>Escape Room</h1>
+    <h1>CLICK FOR CLUES!</h1>
     <p>Click on the clues to find the key and escape!</p>
-     <p>The first thing you notice is the enchanting painting.</p>
+     <p style: font-size="18px">The first thing you notice is the enchanting painting.</p>
 </header>
 
 <main class="game">
@@ -250,7 +251,7 @@
         <button class="task" id="closebutton">Return</button>
     </section>
 </div>
-<footer>CLICK FOR CLUES</footer>
+<footer>Escape Room</footer>
 
 <script>
 
@@ -332,7 +333,7 @@ envelope.addEventListener("click", () => {
 
         showPanel(
             "HIDDEN MESSAGE!",
-            "You found a letter inside the envelope! It says: 'The key to escape is hidden behind the cupboard.'",
+            "You found a letter inside the envelope! It says: 'The key to escape is hidden under the cupboard.'",
             "✉️"
         );
     }
@@ -340,7 +341,7 @@ envelope.addEventListener("click", () => {
     else {
         showPanel(
             "LETTER",
-            "Remember, the key to escape is hidden behind the cupboard.",
+            "Remember, the key to escape is hidden under the cupboard.",
             "✉️"
         );
     }
@@ -374,7 +375,9 @@ exit.addEventListener("click", () => {
             "Unlocked! Congratulations! You are finally free to escape the room!",
             "🚪"
         );
-    } else {
+    } 
+// If the player clicks 'Escape' before finding the key
+    else {
         showPanel(
             "YOU CANNOT LEAVE!",
             "You need to find the key before you can escape.",
